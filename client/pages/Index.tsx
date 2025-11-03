@@ -10,6 +10,7 @@ import {
   BarChart3,
   Layers,
   Lock,
+  Wallet,
 } from "lucide-react";
 
 export default function Index() {
