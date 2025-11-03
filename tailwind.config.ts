@@ -5,6 +5,10 @@ export default {
   content: ["./client/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
+    fontFamily: {
+      sans: ['Inter', 'sans-serif'],
+      display: ['Plus Jakarta Sans', 'sans-serif'],
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -57,6 +61,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        success: "hsl(var(--success))",
+        warning: "hsl(var(--warning))",
+        danger: "hsl(var(--danger))",
+        info: "hsl(var(--info))",
       },
       borderRadius: {
         lg: "var(--radius)",
