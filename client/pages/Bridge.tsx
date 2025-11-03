@@ -129,7 +129,7 @@ export default function Bridge() {
                   key={chain.id}
                   className="card-defi hover:border-primary/50 transition cursor-pointer group"
                 >
-                  <div className={`w-16 h-16 rounded-lg gradient-${chain.color} flex items-center justify-center text-white text-3xl font-bold mb-4 group-hover:scale-110 transition`}>
+                  <div className={`w-16 h-16 rounded-lg bg-gradient-to-br ${chain.color} flex items-center justify-center text-white text-3xl font-bold mb-4 group-hover:scale-110 transition`}>
                     {chain.logo}
                   </div>
                   <h4 className="text-lg font-bold mb-2">{chain.name}</h4>
