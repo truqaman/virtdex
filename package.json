@@ -21,8 +21,13 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@wagmi/core": "^2.22.1",
     "dotenv": "^17.2.1",
+    "ethers": "^6.15.0",
     "express": "^5.1.0",
+    "viem": "^2.38.6",
+    "wagmi": "^2.19.2",
+    "web3modal": "^1.9.12",
     "zod": "^3.25.76"
   },
   "devDependencies": {
