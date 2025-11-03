@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, X, Wallet, Sun, Moon } from "lucide-react";
+import { Menu, X, Wallet, Sun, Moon, Copy, LogOut } from "lucide-react";
+import { useWeb3 } from "@/context/Web3Context";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,6 +14,10 @@ export function Header() {
     }
     return true;
   });
+  const [showWalletMenu, setShowWalletMenu] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const { connected, address, connectWallet, disconnectWallet, loading } = useWeb3();
 
   useEffect(() => {
     // Initialize theme on mount
@@ -33,6 +38,16 @@ export function Header() {
     }
     localStorage.setItem('theme-mode', newIsDark ? 'dark' : 'light');
   };
+
+  const copyAddress = () => {
+    if (address) {
+      navigator.clipboard.writeText(address);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const shortAddress = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "";
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass border-b">
