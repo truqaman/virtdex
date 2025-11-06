@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Menu, X, Sun, Moon, Copy, LogOut, Loader } from "lucide-react";
-import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useWallet } from "@/hooks/useWallet";
 import { toast } from "@/hooks/use-toast";
 
@@ -17,9 +16,9 @@ export function Header() {
   });
   const [showWalletMenu, setShowWalletMenu] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
 
-  const { showDynamicUserProfile } = useDynamicContext();
-  const { address, isConnected, isAuthenticating, formatAddress, copyAddress } =
+  const { address, isConnected, formatAddress, copyAddress, connectWallet, disconnect } =
     useWallet();
 
   useEffect(() => {
@@ -49,6 +48,15 @@ export function Header() {
         description: "Wallet address copied to clipboard",
       });
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleConnect = async () => {
+    try {
+      setIsConnecting(true);
+      await connectWallet();
+    } finally {
+      setIsConnecting(false);
     }
   };
 
@@ -130,19 +138,10 @@ export function Header() {
                       <Copy size={16} />
                       {copied ? "Copied!" : "Copy Address"}
                     </button>
-                    <button
-                      onClick={() => {
-                        showDynamicUserProfile?.();
-                        setShowWalletMenu(false);
-                      }}
-                      className="w-full px-4 py-2 text-left hover:bg-muted flex items-center gap-2 transition"
-                    >
-                      <span>Profile</span>
-                    </button>
                     <div className="border-t border-border my-2" />
                     <button
                       onClick={() => {
-                        showDynamicUserProfile?.();
+                        disconnect();
                         setShowWalletMenu(false);
                       }}
                       className="w-full px-4 py-2 text-left hover:bg-muted flex items-center gap-2 transition text-destructive"
@@ -155,14 +154,14 @@ export function Header() {
               </div>
             ) : (
               <button
-                onClick={() => showDynamicUserProfile?.()}
-                disabled={isAuthenticating}
+                onClick={handleConnect}
+                disabled={isConnecting}
                 className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition disabled:opacity-50"
               >
-                {isAuthenticating ? (
+                {isConnecting ? (
                   <Loader size={18} className="animate-spin" />
                 ) : null}
-                {isAuthenticating ? "Connecting..." : "Connect Wallet"}
+                {isConnecting ? "Connecting..." : "Connect Wallet"}
               </button>
             )}
 
@@ -228,13 +227,13 @@ export function Header() {
             ) : (
               <button
                 onClick={() => {
-                  showDynamicUserProfile?.();
+                  handleConnect();
                   setMobileMenuOpen(false);
                 }}
-                disabled={isAuthenticating}
+                disabled={isConnecting}
                 className="w-full px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:shadow-lg transition disabled:opacity-50"
               >
-                {isAuthenticating ? "Connecting..." : "Connect Wallet"}
+                {isConnecting ? "Connecting..." : "Connect Wallet"}
               </button>
             )}
           </nav>
