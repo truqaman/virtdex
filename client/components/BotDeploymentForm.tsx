@@ -130,7 +130,7 @@ export function BotDeploymentForm({ onSuccess }: BotDeploymentFormProps) {
         )}
 
         {deploymentStatus === "error" && (
-          <Alert className={"mb-6 variant=\"destructive\""}>
+          <Alert className="mb-6" variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{errorMessage}</AlertDescription>
           </Alert>
