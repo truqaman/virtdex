@@ -1,15 +1,58 @@
 import { Header } from "@/components/Header";
-import { Send, Download, QrCode, Copy, Lock, Eye, EyeOff } from "lucide-react";
+import { useWallet } from "@/hooks/useWallet";
+import { useBalance } from "@/hooks/useBalance";
+import { Copy, Lock, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { ethers } from "ethers";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 
 export default function Wallet() {
-  const [showPrivate, setShowPrivate] = useState(false);
+  const { isConnected, address, formatAddress, copyAddress } = useWallet();
+  const { balance } = useBalance({ refetchInterval: 30000 });
   const [copied, setCopied] = useState(false);
 
-  const copyAddress = () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyAddress = () => {
+    if (copyAddress()) {
+      setCopied(true);
+      toast({
+        title: "Copied",
+        description: "Wallet address copied to clipboard",
+      });
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
+
+  const formatUSDh = (value: string) => {
+    try {
+      const num = parseFloat(ethers.formatUnits(value, 18));
+      return num.toFixed(2);
+    } catch {
+      return "0.00";
+    }
+  };
+
+  if (!isConnected) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-background via-card to-background">
+        <Header />
+        <div className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <AlertCircle className="h-16 w-16 text-muted-foreground mb-4" />
+              <h1 className="text-3xl font-bold mb-2">Wallet Not Connected</h1>
+              <p className="text-lg text-foreground/70">
+                Connect your wallet to view and manage your assets
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const balanceAmount = formatUSDh(balance || "0");
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-card to-background">
@@ -21,7 +64,7 @@ export default function Wallet() {
           <div className="space-y-4">
             <h1 className="text-5xl font-black">Smart Wallet</h1>
             <p className="text-xl text-foreground/70">
-              Manage your assets and execute trades with our integrated in-app wallet
+              View and manage your assets securely
             </p>
           </div>
 
@@ -31,8 +74,8 @@ export default function Wallet() {
             <div className="lg:col-span-2 card-defi">
               <div className="flex justify-between items-start mb-8">
                 <div>
-                  <p className="text-foreground/60 mb-2">Total Balance</p>
-                  <h2 className="text-5xl font-black text-primary">$24,582.45</h2>
+                  <p className="text-foreground/60 mb-2">USDh Balance</p>
+                  <h2 className="text-5xl font-black text-primary">${balanceAmount}</h2>
                 </div>
                 <Lock size={32} className="text-accent" />
               </div>
@@ -41,61 +84,48 @@ export default function Wallet() {
               <div className="bg-black/30 p-6 rounded-xl border border-border/30 mb-6">
                 <p className="text-sm text-foreground/60 mb-2">Wallet Address</p>
                 <div className="flex items-center gap-3 mb-4">
-                  <code className="font-mono text-sm flex-1 truncate">
-                    0x742d35Cc6634C0532925a3b844Bc58e8d0A71f8
+                  <code className="font-mono text-sm flex-1 break-all">
+                    {address}
                   </code>
-                  <button
-                    onClick={copyAddress}
-                    className="p-2 hover:bg-white/10 rounded-lg transition"
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleCopyAddress}
+                    className="px-2"
                   >
                     <Copy size={18} className={copied ? "text-accent" : ""} />
-                  </button>
+                  </Button>
                 </div>
                 {copied && <p className="text-accent text-xs">Copied to clipboard!</p>}
               </div>
 
               {/* Quick Actions */}
-              <div className="grid grid-cols-3 gap-3">
-                <button className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition">
-                  <Send size={18} />
-                  <span className="hidden sm:inline">Send</span>
-                </button>
-                <button className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-border bg-card font-semibold hover:bg-muted transition">
-                  <Download size={18} />
-                  <span className="hidden sm:inline">Receive</span>
-                </button>
-                <button className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-border bg-card font-semibold hover:bg-muted transition">
-                  <QrCode size={18} />
-                  <span className="hidden sm:inline">QR Code</span>
-                </button>
+              <div className="grid grid-cols-2 gap-3">
+                <Button className="w-full" variant="outline">
+                  Send
+                </Button>
+                <Button className="w-full" variant="outline">
+                  Receive
+                </Button>
               </div>
             </div>
 
-            {/* Security Info */}
+            {/* Account Info */}
             <div className="card-defi">
-              <h3 className="text-xl font-bold mb-6">Security</h3>
+              <h3 className="text-xl font-bold mb-6">Account</h3>
               <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-accent/10 border border-accent/50">
-                  <div className="flex items-start gap-3 mb-2">
-                    <Lock size={18} className="text-accent flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-sm">Multi-Signature Enabled</p>
-                      <p className="text-xs text-foreground/60">Requires 2 of 3 approvals</p>
-                    </div>
-                  </div>
+                <div>
+                  <p className="text-sm text-foreground/60 mb-1">Connected Address</p>
+                  <p className="font-mono text-sm font-semibold">{formatAddress(address!)}</p>
                 </div>
-                <div className="p-4 rounded-lg bg-primary/10 border border-primary/50">
-                  <div className="flex items-start gap-3 mb-2">
-                    <Lock size={18} className="text-primary flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-sm">2FA Configured</p>
-                      <p className="text-xs text-foreground/60">Time-based authentication</p>
-                    </div>
-                  </div>
+                <div className="border-t border-border/30 pt-4">
+                  <p className="text-sm text-foreground/60 mb-1">Network</p>
+                  <p className="font-semibold">Optimism (OP)</p>
                 </div>
-                <button className="w-full px-4 py-3 rounded-lg border border-border hover:bg-muted transition font-semibold">
-                  Security Settings
-                </button>
+                <div className="border-t border-border/30 pt-4">
+                  <p className="text-sm text-foreground/60 mb-1">Token</p>
+                  <p className="font-semibold">USDh</p>
+                </div>
               </div>
             </div>
           </div>
@@ -111,121 +141,89 @@ export default function Wallet() {
                     <th className="text-right py-3 px-4 font-semibold text-foreground/60">Amount</th>
                     <th className="text-right py-3 px-4 font-semibold text-foreground/60">Value</th>
                     <th className="text-right py-3 px-4 font-semibold text-foreground/60">Chain</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground/60">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/30">
-                  {[
-                    {
-                      token: "USDh",
-                      amount: "15,234.50",
-                      value: "$15,234.50",
-                      chain: "Ethereum",
-                    },
-                    {
-                      token: "ETH",
-                      amount: "2.45",
-                      value: "$5,875.80",
-                      chain: "Ethereum",
-                    },
-                    {
-                      token: "ARB",
-                      amount: "1,250",
-                      value: "$2,125.50",
-                      chain: "Arbitrum",
-                    },
-                    {
-                      token: "OP",
-                      amount: "850",
-                      value: "$1,346.15",
-                      chain: "Optimism",
-                    },
-                  ].map((token) => (
-                    <tr key={token.token} className="hover:bg-white/5 transition">
-                      <td className="py-4 px-4 font-semibold">{token.token}</td>
-                      <td className="py-4 px-4 text-right text-foreground/70">{token.amount}</td>
-                      <td className="py-4 px-4 text-right font-semibold">{token.value}</td>
-                      <td className="py-4 px-4 text-right text-sm text-foreground/60">
-                        {token.chain}
-                      </td>
-                      <td className="py-4 px-4 text-right">
-                        <div className="flex gap-2 justify-end">
-                          <button className="text-primary hover:text-cyan-300 transition text-sm font-semibold">
-                            Send
-                          </button>
-                          <span className="text-foreground/30">•</span>
-                          <button className="text-primary hover:text-cyan-300 transition text-sm font-semibold">
-                            Swap
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                  <tr className="hover:bg-white/5 transition">
+                    <td className="py-4 px-4 font-semibold">USDh</td>
+                    <td className="py-4 px-4 text-right text-foreground/70">{balanceAmount}</td>
+                    <td className="py-4 px-4 text-right font-semibold">${balanceAmount}</td>
+                    <td className="py-4 px-4 text-right text-sm text-foreground/60">Optimism</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          {/* Transaction History */}
-          <div className="card-defi">
-            <h3 className="text-2xl font-bold mb-6">Recent Transactions</h3>
-            <div className="space-y-3">
-              {[
-                {
-                  type: "Received",
-                  token: "1.5 ETH",
-                  amount: "+$3,587.50",
-                  time: "2 hours ago",
-                  from: "0x1234...5678",
-                },
-                {
-                  type: "Sent",
-                  token: "500 USDh",
-                  amount: "-$500.00",
-                  time: "5 hours ago",
-                  to: "0x9ABC...DEF0",
-                },
-                {
-                  type: "Swap",
-                  token: "2 ETH → 3,150 ARB",
-                  amount: "$4,750.00",
-                  time: "1 day ago",
-                  from: "Uniswap",
-                },
-                {
-                  type: "Bridge",
-                  token: "100 USDh",
-                  amount: "$100.00",
-                  time: "2 days ago",
-                  from: "Ethereum → Arbitrum",
-                },
-              ].map((tx, idx) => (
-                <div
-                  key={idx}
-                  className="flex justify-between items-center p-4 rounded-lg hover:bg-white/5 transition border border-border/30"
-                >
-                  <div>
-                    <p className="font-semibold mb-1">{tx.type}</p>
-                    <p className="text-sm text-foreground/60">{tx.token}</p>
+          {/* Supported Networks Info */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Supported Networks</CardTitle>
+                <CardDescription>
+                  Use your wallet across multiple chains
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {[
+                    { name: "Optimism", symbol: "OP" },
+                    { name: "Ethereum", symbol: "ETH" },
+                    { name: "Arbitrum", symbol: "ARB" },
+                    { name: "Polygon", symbol: "MATIC" },
+                    { name: "Base", symbol: "BASE" },
+                    { name: "Linea", symbol: "LINEA" },
+                  ].map((network) => (
+                    <div
+                      key={network.symbol}
+                      className="flex items-center justify-between p-2 rounded hover:bg-muted transition"
+                    >
+                      <span className="font-medium">{network.name}</span>
+                      <span className="text-sm text-foreground/60">{network.symbol}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Security</CardTitle>
+                <CardDescription>
+                  Your funds are secure
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800">
+                    <div className="flex items-start gap-3">
+                      <Lock size={18} className="text-green-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-sm text-green-900 dark:text-green-100">
+                          Non-Custodial Wallet
+                        </p>
+                        <p className="text-xs text-green-800 dark:text-green-200">
+                          You have full control of your private keys
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className={`font-semibold ${tx.amount.startsWith("+") ? "text-accent" : ""}`}>
-                      {tx.amount}
-                    </p>
-                    <p className="text-xs text-foreground/60">{tx.time}</p>
+                  <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800">
+                    <div className="flex items-start gap-3">
+                      <Lock size={18} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-sm text-blue-900 dark:text-blue-100">
+                          Audited Smart Contracts
+                        </p>
+                        <p className="text-xs text-blue-800 dark:text-blue-200">
+                          All contracts have been security audited
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Fiat On-Ramp CTA */}
-          <div className="glass p-12 rounded-3xl border border-accent/30 text-center space-y-6">
-            <h2 className="text-3xl font-bold">Need More USDh?</h2>
-            <p className="text-lg text-foreground/70">
-              Buy directly with your credit card, bank transfer, or other payment methods
-            </p>
-            <button className="btn-primary text-lg mx-auto">Buy USDh Now</button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
