@@ -1,30 +1,32 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, X, Wallet, Sun, Moon, Copy, LogOut } from "lucide-react";
-import { useWeb3 } from "@/context/Web3Context";
+import { Menu, X, Sun, Moon, Copy, LogOut, Loader } from "lucide-react";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { useWallet } from "@/hooks/useWallet";
+import { toast } from "@/hooks/use-toast";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => {
-    // Check system preference or localStorage
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('theme-mode');
-      if (stored) return stored === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("theme-mode");
+      if (stored) return stored === "dark";
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
     return true;
   });
   const [showWalletMenu, setShowWalletMenu] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const { connected, address, connectWallet, disconnectWallet, loading } = useWeb3();
+  const { showDynamicUserProfile } = useDynamicContext();
+  const { address, isConnected, isAuthenticating, formatAddress, copyAddress } =
+    useWallet();
 
   useEffect(() => {
-    // Initialize theme on mount
     if (isDark) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 
@@ -32,22 +34,25 @@ export function Header() {
     const newIsDark = !isDark;
     setIsDark(newIsDark);
     if (newIsDark) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem('theme-mode', newIsDark ? 'dark' : 'light');
+    localStorage.setItem("theme-mode", newIsDark ? "dark" : "light");
   };
 
-  const copyAddress = () => {
-    if (address) {
-      navigator.clipboard.writeText(address);
+  const handleCopyAddress = () => {
+    if (copyAddress()) {
       setCopied(true);
+      toast({
+        title: "Copied",
+        description: "Wallet address copied to clipboard",
+      });
       setTimeout(() => setCopied(false), 2000);
     }
   };
 
-  const shortAddress = address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "";
+  const shortAddress = address ? formatAddress(address) : "";
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass border-b">
@@ -63,11 +68,36 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-8 items-center">
-            <Link to="/dashboard" className="text-foreground/80 hover:text-primary transition">Trade</Link>
-            <Link to="/bots" className="text-foreground/80 hover:text-primary transition">Bots</Link>
-            <Link to="/wallet" className="text-foreground/80 hover:text-primary transition">Wallet</Link>
-            <Link to="/bridge" className="text-foreground/80 hover:text-primary transition">Bridge</Link>
-            <Link to="/analytics" className="text-foreground/80 hover:text-primary transition">Analytics</Link>
+            <Link
+              to="/dashboard"
+              className="text-foreground/80 hover:text-primary transition"
+            >
+              Trade
+            </Link>
+            <Link
+              to="/bots"
+              className="text-foreground/80 hover:text-primary transition"
+            >
+              Bots
+            </Link>
+            <Link
+              to="/wallet"
+              className="text-foreground/80 hover:text-primary transition"
+            >
+              Wallet
+            </Link>
+            <Link
+              to="/bridge"
+              className="text-foreground/80 hover:text-primary transition"
+            >
+              Bridge
+            </Link>
+            <Link
+              to="/analytics"
+              className="text-foreground/80 hover:text-primary transition"
+            >
+              Analytics
+            </Link>
           </nav>
 
           {/* Right Actions */}
@@ -75,19 +105,72 @@ export function Header() {
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg hover:bg-white/10 transition"
+              aria-label="Toggle theme"
             >
               {isDark ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
-            <button className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition">
-              <Wallet size={18} />
-              Connect
-            </button>
+            {/* Wallet Connection */}
+            {isConnected && address ? (
+              <div className="hidden sm:flex items-center gap-2 relative">
+                <button
+                  onClick={() => setShowWalletMenu(!showWalletMenu)}
+                  className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition flex items-center gap-2"
+                >
+                  <div className="w-2 h-2 rounded-full bg-green-400" />
+                  {shortAddress}
+                </button>
+
+                {showWalletMenu && (
+                  <div className="absolute top-full right-0 mt-2 w-48 rounded-lg bg-background border border-border shadow-lg py-2 z-50">
+                    <button
+                      onClick={handleCopyAddress}
+                      className="w-full px-4 py-2 text-left hover:bg-muted flex items-center gap-2 transition"
+                    >
+                      <Copy size={16} />
+                      {copied ? "Copied!" : "Copy Address"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        showDynamicUserProfile?.();
+                        setShowWalletMenu(false);
+                      }}
+                      className="w-full px-4 py-2 text-left hover:bg-muted flex items-center gap-2 transition"
+                    >
+                      <span>Profile</span>
+                    </button>
+                    <div className="border-t border-border my-2" />
+                    <button
+                      onClick={() => {
+                        showDynamicUserProfile?.();
+                        setShowWalletMenu(false);
+                      }}
+                      className="w-full px-4 py-2 text-left hover:bg-muted flex items-center gap-2 transition text-destructive"
+                    >
+                      <LogOut size={16} />
+                      Disconnect
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={() => showDynamicUserProfile?.()}
+                disabled={isAuthenticating}
+                className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition disabled:opacity-50"
+              >
+                {isAuthenticating ? (
+                  <Loader size={18} className="animate-spin" />
+                ) : null}
+                {isAuthenticating ? "Connecting..." : "Connect Wallet"}
+              </button>
+            )}
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-white/10 transition"
+              aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -132,9 +215,28 @@ export function Header() {
             >
               Analytics
             </Link>
-            <button className="w-full px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:shadow-lg transition">
-              Connect Wallet
-            </button>
+            {isConnected && address ? (
+              <>
+                <button
+                  onClick={handleCopyAddress}
+                  className="w-full px-4 py-2 rounded-lg bg-primary/20 text-primary font-semibold hover:bg-primary/30 transition flex items-center gap-2"
+                >
+                  <Copy size={16} />
+                  {shortAddress}
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  showDynamicUserProfile?.();
+                  setMobileMenuOpen(false);
+                }}
+                disabled={isAuthenticating}
+                className="w-full px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:shadow-lg transition disabled:opacity-50"
+              >
+                {isAuthenticating ? "Connecting..." : "Connect Wallet"}
+              </button>
+            )}
           </nav>
         )}
       </div>
