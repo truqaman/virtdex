@@ -21,6 +21,9 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@dynamic-labs/ethereum": "^4.44.0",
+    "@dynamic-labs/sdk-react-core": "^4.44.0",
+    "@dynamic-labs/wallet-connector-core": "^4.44.0",
     "@wagmi/core": "^2.22.1",
     "dotenv": "^17.2.1",
     "ethers": "^6.15.0",
