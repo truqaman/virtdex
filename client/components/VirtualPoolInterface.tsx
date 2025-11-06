@@ -55,7 +55,7 @@ export function VirtualPoolInterface() {
   const { isConnected, address } = useWallet();
 
   const form = useForm<PoolFormValues>({
-    resolver: zodSchema(poolSchema),
+    resolver: zodResolver(poolSchema),
     defaultValues: {
       amount: "",
     },
