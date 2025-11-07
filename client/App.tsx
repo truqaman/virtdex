@@ -7,6 +7,7 @@ import { DynamicProvider } from "./context/DynamicProvider";
 import { Web3Provider } from "./context/Web3Context";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import Trading from "./pages/Trading";
 import Bots from "./pages/Bots";
 import Wallet from "./pages/Wallet";
 import Bridge from "./pages/Bridge";
