@@ -197,7 +197,7 @@ export default function Index() {
                 USDh Stablecoin Ecosystem
               </h2>
               <p className="text-lg text-foreground/70">
-                DeFiX is fully integrated with the USDh stablecoin ecosystem,
+                VirtDEX is fully integrated with the USDh stablecoin ecosystem,
                 providing stable, reliable trading pairs with minimal slippage
                 across all supported networks.
               </p>
@@ -307,7 +307,7 @@ export default function Index() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-border/50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl lg:text-5xl font-black text-center mb-16">
-            How DeFiX Works
+            How VirtDEX Works
           </h2>
 
           <div className="grid md:grid-cols-4 gap-6">
@@ -352,7 +352,7 @@ export default function Index() {
             Ready to Start Trading?
           </h2>
           <p className="text-xl text-foreground/60 max-w-2xl mx-auto">
-            Join thousands of traders already using DeFiX to maximize their
+            Join thousands of traders already using VirtDEX to maximize their
             returns with intelligent arbitrage bots and advanced analytics.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -458,7 +458,7 @@ export default function Index() {
           </div>
 
           <div className="border-t border-border/50 pt-8 flex flex-col sm:flex-row justify-between items-center text-foreground/60 text-sm">
-            <p>&copy; 2024 DeFiX. All rights reserved.</p>
+            <p>&copy; 2025 VirtDEX. All rights reserved.</p>
             <div className="flex gap-6 mt-4 sm:mt-0">
               <a href="#" className="hover:text-primary transition">
                 Twitter

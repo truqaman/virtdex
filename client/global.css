@@ -36,8 +36,8 @@
     --muted: 215 15% 35%;
     --muted-foreground: 210 10% 70%;
 
-    /* Accent - Neon Green */
-    --accent: 120 100% 50%;
+    /* Accent - Light Responsive Orange */
+    --accent: 39 100% 55%;
     --accent-foreground: 15 20% 8%;
 
     /* Destructive */
@@ -88,7 +88,7 @@
     --muted: 220 15% 85%;
     --muted-foreground: 220 10% 35%;
 
-    --accent: 120 100% 45%;
+    --accent: 39 100% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;

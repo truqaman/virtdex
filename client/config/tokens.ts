@@ -26,7 +26,7 @@ export const PLATFORM_TOKENS: TokenConfig[] = [
   {
     symbol: "YL$",
     name: "YuLiP$",
-    address: "", // Will be provided during integration
+    address: "0xc618101aD5F3A5D924219F225148f8Ac1Ad74Dba",
     decimals: 18,
     category: "platform-token",
     chainId: 10,
@@ -34,7 +34,7 @@ export const PLATFORM_TOKENS: TokenConfig[] = [
   {
     symbol: "Cosmic-ETH",
     name: "Cosmic Ethereum",
-    address: "", // Will be provided during integration
+    address: "0x57fB2Ae125697A998Aa7b016fc0196fE8931EC3b",
     decimals: 18,
     category: "stake-token",
     chainId: 10,
@@ -42,7 +42,7 @@ export const PLATFORM_TOKENS: TokenConfig[] = [
   {
     symbol: "hETH",
     name: "hilipETH",
-    address: "", // Will be provided during integration
+    address: "0x31759793190E0033660C2Ecd29f3Fba6011d88B5",
     decimals: 18,
     category: "stake-token",
     chainId: 10,
