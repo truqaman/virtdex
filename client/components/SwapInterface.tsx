@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -12,26 +12,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useWallet } from '@/hooks/useWallet';
-import { useBalance } from '@/hooks/useBalance';
-import { toast } from '@/hooks/use-toast';
+} from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useWallet } from "@/hooks/useWallet";
+import { useBalance } from "@/hooks/useBalance";
+import { toast } from "@/hooks/use-toast";
 import {
   ArrowDownUp,
   Loader,
@@ -39,16 +39,16 @@ import {
   TrendingUp,
   Zap,
   Settings2,
-} from 'lucide-react';
-import { ALL_TOKENS, TokenConfig, getTokenBySymbol } from '@/config/tokens';
-import { dexRouter, SwapQuote } from '@/services/dexRouter';
-import { ethers } from 'ethers';
+} from "lucide-react";
+import { ALL_TOKENS, TokenConfig, getTokenBySymbol } from "@/config/tokens";
+import { dexRouter, SwapQuote } from "@/services/dexRouter";
+import { ethers } from "ethers";
 
 const swapSchema = z.object({
   inputToken: z.string(),
   outputToken: z.string(),
-  inputAmount: z.string().regex(/^\d+(\.\d+)?$/, 'Invalid amount'),
-  slippage: z.string().regex(/^\d+(\.\d+)?$/, 'Must be 0-100'),
+  inputAmount: z.string().regex(/^\d+(\.\d+)?$/, "Invalid amount"),
+  slippage: z.string().regex(/^\d+(\.\d+)?$/, "Must be 0-100"),
 });
 
 type SwapFormValues = z.infer<typeof swapSchema>;
@@ -59,13 +59,13 @@ interface SwapInterfaceProps {
 }
 
 export function SwapInterface({
-  defaultInputToken = 'USDh',
-  defaultOutputToken = 'ETH',
+  defaultInputToken = "USDh",
+  defaultOutputToken = "ETH",
 }: SwapInterfaceProps) {
   const [swapQuote, setSwapQuote] = useState<SwapQuote | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isExecuting, setIsExecuting] = useState(false);
-  const [selectedDex, setSelectedDex] = useState<string>('best');
+  const [selectedDex, setSelectedDex] = useState<string>("best");
 
   const { isConnected } = useWallet();
   const { balance } = useBalance({ refetchInterval: 30000 });
@@ -75,14 +75,14 @@ export function SwapInterface({
     defaultValues: {
       inputToken: defaultInputToken,
       outputToken: defaultOutputToken,
-      inputAmount: '',
-      slippage: '0.5',
+      inputAmount: "",
+      slippage: "0.5",
     },
   });
 
-  const inputTokenSymbol = form.watch('inputToken');
-  const outputTokenSymbol = form.watch('outputToken');
-  const inputAmount = form.watch('inputAmount');
+  const inputTokenSymbol = form.watch("inputToken");
+  const outputTokenSymbol = form.watch("outputToken");
+  const inputAmount = form.watch("inputAmount");
 
   const inputToken = getTokenBySymbol(inputTokenSymbol);
   const outputToken = getTokenBySymbol(outputTokenSymbol);
@@ -90,7 +90,12 @@ export function SwapInterface({
   // Fetch quote when tokens or amount changes
   useEffect(() => {
     const fetchQuote = async () => {
-      if (!inputToken || !outputToken || !inputAmount || parseFloat(inputAmount) <= 0) {
+      if (
+        !inputToken ||
+        !outputToken ||
+        !inputAmount ||
+        parseFloat(inputAmount) <= 0
+      ) {
         setSwapQuote(null);
         return;
       }
@@ -100,7 +105,7 @@ export function SwapInterface({
         const quote = await dexRouter.getSwapQuote(
           inputToken,
           outputToken,
-          inputAmount
+          inputAmount,
         );
 
         if (quote) {
@@ -108,13 +113,13 @@ export function SwapInterface({
         } else {
           setSwapQuote(null);
           toast({
-            title: 'Error',
-            description: 'Unable to get swap quote',
-            variant: 'destructive',
+            title: "Error",
+            description: "Unable to get swap quote",
+            variant: "destructive",
           });
         }
       } catch (error) {
-        console.error('Quote fetch error:', error);
+        console.error("Quote fetch error:", error);
         setSwapQuote(null);
       } finally {
         setIsLoading(false);
@@ -126,26 +131,26 @@ export function SwapInterface({
   }, [inputToken, outputToken, inputAmount]);
 
   const handleSwapTokens = () => {
-    const temp = form.getValues('inputToken');
-    form.setValue('inputToken', form.getValues('outputToken'));
-    form.setValue('outputToken', temp);
+    const temp = form.getValues("inputToken");
+    form.setValue("inputToken", form.getValues("outputToken"));
+    form.setValue("outputToken", temp);
   };
 
   const onSubmit = async (values: SwapFormValues) => {
     if (!isConnected) {
       toast({
-        title: 'Wallet Not Connected',
-        description: 'Please connect your wallet to swap',
-        variant: 'destructive',
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet to swap",
+        variant: "destructive",
       });
       return;
     }
 
     if (!swapQuote) {
       toast({
-        title: 'Invalid Quote',
-        description: 'No swap quote available',
-        variant: 'destructive',
+        title: "Invalid Quote",
+        description: "No swap quote available",
+        variant: "destructive",
       });
       return;
     }
@@ -153,36 +158,37 @@ export function SwapInterface({
     try {
       setIsExecuting(true);
 
-      const route = selectedDex === 'best' ? swapQuote.bestRoute : swapQuote.routes[0];
+      const route =
+        selectedDex === "best" ? swapQuote.bestRoute : swapQuote.routes[0];
 
       const txHash = await dexRouter.executeSwap(
         route,
         swapQuote.inputToken,
         swapQuote.outputToken,
         swapQuote.totalOutput,
-        parseFloat(values.slippage)
+        parseFloat(values.slippage),
       );
 
       if (txHash) {
         toast({
-          title: 'Swap Executed',
+          title: "Swap Executed",
           description: `Swap successful: ${txHash}`,
         });
         form.reset();
         setSwapQuote(null);
       } else {
         toast({
-          title: 'Swap Failed',
-          description: 'Transaction execution failed',
-          variant: 'destructive',
+          title: "Swap Failed",
+          description: "Transaction execution failed",
+          variant: "destructive",
         });
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Swap failed';
+      const message = error instanceof Error ? error.message : "Swap failed";
       toast({
-        title: 'Error',
+        title: "Error",
         description: message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     } finally {
       setIsExecuting(false);
@@ -261,7 +267,10 @@ export function SwapInterface({
               </div>
               {inputTokenData && (
                 <FormDescription>
-                  Balance: {balance ? ethers.formatUnits(balance, inputTokenData.decimals) : '0'}{' '}
+                  Balance:{" "}
+                  {balance
+                    ? ethers.formatUnits(balance, inputTokenData.decimals)
+                    : "0"}{" "}
                   {inputTokenData.symbol}
                 </FormDescription>
               )}
@@ -308,7 +317,7 @@ export function SwapInterface({
                   value={
                     swapQuote
                       ? parseFloat(swapQuote.totalOutput).toFixed(6)
-                      : '0'
+                      : "0"
                   }
                 />
               </div>
@@ -322,8 +331,8 @@ export function SwapInterface({
                   <span
                     className={
                       parseFloat(swapQuote.priceImpact) > 5
-                        ? 'text-red-500 font-semibold'
-                        : 'text-green-500 font-semibold'
+                        ? "text-red-500 font-semibold"
+                        : "text-green-500 font-semibold"
                     }
                   >
                     {swapQuote.priceImpact}%
@@ -358,7 +367,7 @@ export function SwapInterface({
                     <TabsTrigger value="best">Best</TabsTrigger>
                     {swapQuote.routes.map((route) => (
                       <TabsTrigger key={route.dex} value={route.dex}>
-                        {route.dex.split('-')[0]}
+                        {route.dex.split("-")[0]}
                       </TabsTrigger>
                     ))}
                   </TabsList>
@@ -374,7 +383,13 @@ export function SwapInterface({
                 <FormItem>
                   <FormLabel>Slippage Tolerance (%)</FormLabel>
                   <FormControl>
-                    <Input type="number" step="0.1" min="0" max="100" {...field} />
+                    <Input
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      max="100"
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
                     Maximum acceptable price difference
@@ -399,9 +414,7 @@ export function SwapInterface({
               type="submit"
               size="lg"
               className="w-full"
-              disabled={
-                isLoading || isExecuting || !swapQuote || !isConnected
-              }
+              disabled={isLoading || isExecuting || !swapQuote || !isConnected}
             >
               {isLoading ? (
                 <>

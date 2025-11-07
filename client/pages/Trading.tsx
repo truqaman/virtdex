@@ -1,11 +1,17 @@
-import { Header } from '@/components/Header';
-import { SwapInterface } from '@/components/SwapInterface';
-import { StakingInterface } from '@/components/StakingInterface';
-import { VirtualPoolInterface } from '@/components/VirtualPoolInterface';
-import { useWallet } from '@/hooks/useWallet';
-import { TrendingUp, BarChart3, AlertCircle, Zap } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Header } from "@/components/Header";
+import { SwapInterface } from "@/components/SwapInterface";
+import { StakingInterface } from "@/components/StakingInterface";
+import { VirtualPoolInterface } from "@/components/VirtualPoolInterface";
+import { useWallet } from "@/hooks/useWallet";
+import { TrendingUp, BarChart3, AlertCircle, Zap } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function Trading() {
   const { isConnected } = useWallet();
@@ -39,7 +45,8 @@ export default function Trading() {
           <div className="space-y-4">
             <h1 className="text-5xl font-black">VirtDEX Trading</h1>
             <p className="text-xl text-foreground/70">
-              Trade tokens with optimal DEX routing, earn passive income, and provide liquidity
+              Trade tokens with optimal DEX routing, earn passive income, and
+              provide liquidity
             </p>
           </div>
 
@@ -80,7 +87,9 @@ export default function Trading() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$18.5M</div>
-                <p className="text-xs text-muted-foreground mt-1">Virtual pools</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Virtual pools
+                </p>
               </CardContent>
             </Card>
 
@@ -90,7 +99,9 @@ export default function Trading() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">0.25%</div>
-                <p className="text-xs text-muted-foreground mt-1">Lowest in DeFi</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Lowest in DeFi
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -102,7 +113,10 @@ export default function Trading() {
                 <TrendingUp className="h-4 w-4" />
                 <span className="hidden sm:inline">Swap</span>
               </TabsTrigger>
-              <TabsTrigger value="liquidity" className="flex items-center gap-2">
+              <TabsTrigger
+                value="liquidity"
+                className="flex items-center gap-2"
+              >
                 <Zap className="h-4 w-4" />
                 <span className="hidden sm:inline">Liquidity</span>
               </TabsTrigger>
@@ -110,7 +124,10 @@ export default function Trading() {
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Stake</span>
               </TabsTrigger>
-              <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <TabsTrigger
+                value="analytics"
+                className="flex items-center gap-2"
+              >
                 <TrendingUp className="h-4 w-4" />
                 <span className="hidden sm:inline">Stats</span>
               </TabsTrigger>
@@ -121,10 +138,14 @@ export default function Trading() {
               <div className="space-y-4">
                 <h2 className="text-2xl font-bold">Swap Tokens</h2>
                 <p className="text-foreground/70">
-                  Get the best price across multiple DEX protocols with automatic routing
+                  Get the best price across multiple DEX protocols with
+                  automatic routing
                 </p>
               </div>
-              <SwapInterface defaultInputToken="USDh" defaultOutputToken="ETH" />
+              <SwapInterface
+                defaultInputToken="USDh"
+                defaultOutputToken="ETH"
+              />
             </TabsContent>
 
             {/* Liquidity Tab */}
@@ -186,9 +207,21 @@ export default function Trading() {
                   <CardContent>
                     <div className="space-y-4">
                       {[
-                        { name: 'Stablecoin Pairs', value: '45%', color: 'bg-blue-500' },
-                        { name: 'Major Tokens', value: '35%', color: 'bg-purple-500' },
-                        { name: 'Platform Tokens', value: '20%', color: 'bg-accent' },
+                        {
+                          name: "Stablecoin Pairs",
+                          value: "45%",
+                          color: "bg-blue-500",
+                        },
+                        {
+                          name: "Major Tokens",
+                          value: "35%",
+                          color: "bg-purple-500",
+                        },
+                        {
+                          name: "Platform Tokens",
+                          value: "20%",
+                          color: "bg-accent",
+                        },
                       ].map((item) => (
                         <div key={item.name}>
                           <div className="flex justify-between text-sm mb-2">
@@ -220,10 +253,18 @@ export default function Trading() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm text-foreground/70">
-                <li>• Use limit orders to avoid high slippage on large trades</li>
-                <li>• Provide liquidity to earn sustainable passive income from swap fees</li>
+                <li>
+                  • Use limit orders to avoid high slippage on large trades
+                </li>
+                <li>
+                  • Provide liquidity to earn sustainable passive income from
+                  swap fees
+                </li>
                 <li>• Stake USDh to earn 24% APY and governance rights</li>
-                <li>• VirtDEX uses the best DEX routing across Uniswap, Velodrome, and Sushiswap</li>
+                <li>
+                  • VirtDEX uses the best DEX routing across Uniswap, Velodrome,
+                  and Sushiswap
+                </li>
               </ul>
             </CardContent>
           </Card>

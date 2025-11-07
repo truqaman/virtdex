@@ -1,15 +1,30 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader, Copy, Lock, LogOut, Mail, Github, Twitter, Chrome } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Loader,
+  Copy,
+  Lock,
+  LogOut,
+  Mail,
+  Github,
+  Twitter,
+  Chrome,
+} from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface HotWalletUser {
   id: string;
   email: string;
-  provider: 'email' | 'google' | 'discord' | 'twitter';
+  provider: "email" | "google" | "discord" | "twitter";
   walletAddress: string;
   createdAt: Date;
 }
@@ -18,16 +33,16 @@ export function HotWallet() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<HotWalletUser | null>(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [copied, setCopied] = useState(false);
 
   const handleEmailSignup = async () => {
     if (!email || !password) {
       toast({
-        title: 'Error',
-        description: 'Please enter email and password',
-        variant: 'destructive',
+        title: "Error",
+        description: "Please enter email and password",
+        variant: "destructive",
       });
       return;
     }
@@ -38,29 +53,31 @@ export function HotWallet() {
       const mockUser: HotWalletUser = {
         id: `user_${Date.now()}`,
         email,
-        provider: 'email',
-        walletAddress: '0x' + Math.random().toString(16).slice(2),
+        provider: "email",
+        walletAddress: "0x" + Math.random().toString(16).slice(2),
         createdAt: new Date(),
       };
 
       setUser(mockUser);
       setIsAuthenticated(true);
       toast({
-        title: 'Success',
-        description: 'Wallet created successfully',
+        title: "Success",
+        description: "Wallet created successfully",
       });
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to create wallet',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to create wallet",
+        variant: "destructive",
       });
     } finally {
       setIsConnecting(false);
     }
   };
 
-  const handleSocialLogin = async (provider: 'google' | 'discord' | 'twitter') => {
+  const handleSocialLogin = async (
+    provider: "google" | "discord" | "twitter",
+  ) => {
     try {
       setIsConnecting(true);
       // Mock social login - in production, this would use OAuth
@@ -68,21 +85,21 @@ export function HotWallet() {
         id: `user_${Date.now()}`,
         email: `user_${Date.now()}@social.local`,
         provider,
-        walletAddress: '0x' + Math.random().toString(16).slice(2),
+        walletAddress: "0x" + Math.random().toString(16).slice(2),
         createdAt: new Date(),
       };
 
       setUser(mockUser);
       setIsAuthenticated(true);
       toast({
-        title: 'Success',
+        title: "Success",
         description: `Connected with ${provider}`,
       });
     } catch (error) {
       toast({
-        title: 'Error',
+        title: "Error",
         description: `Failed to connect with ${provider}`,
-        variant: 'destructive',
+        variant: "destructive",
       });
     } finally {
       setIsConnecting(false);
@@ -100,11 +117,11 @@ export function HotWallet() {
   const handleLogout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    setEmail('');
-    setPassword('');
+    setEmail("");
+    setPassword("");
     toast({
-      title: 'Logged Out',
-      description: 'You have been logged out',
+      title: "Logged Out",
+      description: "You have been logged out",
     });
   };
 
@@ -164,10 +181,7 @@ export function HotWallet() {
                   onClick={handleCopyAddress}
                   className="px-3"
                 >
-                  <Copy
-                    size={18}
-                    className={copied ? 'text-accent' : ''}
-                  />
+                  <Copy size={18} className={copied ? "text-accent" : ""} />
                 </Button>
               </div>
               {copied && (
@@ -180,9 +194,7 @@ export function HotWallet() {
                 Member Since
               </label>
               <div className="mt-2 p-3 bg-muted rounded-lg">
-                <p className="text-sm">
-                  {user.createdAt.toLocaleDateString()}
-                </p>
+                <p className="text-sm">{user.createdAt.toLocaleDateString()}</p>
               </div>
             </div>
           </div>
@@ -261,7 +273,7 @@ export function HotWallet() {
         <div className="grid grid-cols-2 gap-3">
           <Button
             variant="outline"
-            onClick={() => handleSocialLogin('google')}
+            onClick={() => handleSocialLogin("google")}
             disabled={isConnecting}
           >
             <Chrome className="mr-2 h-4 w-4" />
@@ -270,7 +282,7 @@ export function HotWallet() {
 
           <Button
             variant="outline"
-            onClick={() => handleSocialLogin('discord')}
+            onClick={() => handleSocialLogin("discord")}
             disabled={isConnecting}
           >
             <Github className="mr-2 h-4 w-4" />
@@ -281,7 +293,7 @@ export function HotWallet() {
         <Button
           variant="outline"
           className="w-full"
-          onClick={() => handleSocialLogin('twitter')}
+          onClick={() => handleSocialLogin("twitter")}
           disabled={isConnecting}
         >
           <Twitter className="mr-2 h-4 w-4" />

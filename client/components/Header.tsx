@@ -18,8 +18,14 @@ export function Header() {
   const [copied, setCopied] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
 
-  const { address, isConnected, formatAddress, copyAddress, connectWallet, disconnect } =
-    useWallet();
+  const {
+    address,
+    isConnected,
+    formatAddress,
+    copyAddress,
+    connectWallet,
+    disconnect,
+  } = useWallet();
 
   useEffect(() => {
     if (isDark) {

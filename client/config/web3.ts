@@ -1,6 +1,8 @@
 // VirtDEX Web3 Configuration for Optimism Mainnet
-export const USDHSTABLECOIN_ADDRESS = "0xFA16ddB46dEa8cB154570dB48aaD6b9021dbeDB5";
-export const DCAARBITRAGEBOT_ADDRESS = "0xD88bc3A753bB43579da71a3AE2664DA6DA3cae6b";
+export const USDHSTABLECOIN_ADDRESS =
+  "0xFA16ddB46dEa8cB154570dB48aaD6b9021dbeDB5";
+export const DCAARBITRAGEBOT_ADDRESS =
+  "0xD88bc3A753bB43579da71a3AE2664DA6DA3cae6b";
 
 // VirtDEX Platform Tokens (to be populated with actual addresses)
 export const YL_STAKE_TOKEN = ""; // YuLiP$ address

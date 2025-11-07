@@ -1,5 +1,5 @@
-import { ethers } from 'ethers';
-import { TokenConfig } from '@/config/tokens';
+import { ethers } from "ethers";
+import { TokenConfig } from "@/config/tokens";
 
 /**
  * Token Conversion Service
@@ -12,7 +12,7 @@ export interface ConversionRate {
   toToken: string;
   rate: string; // Stored as string to preserve precision
   timestamp: number;
-  source: 'oracle' | 'dex' | 'locked-assets';
+  source: "oracle" | "dex" | "locked-assets";
 }
 
 interface LockedAsset {
@@ -32,7 +32,7 @@ class TokenConverter {
     fromToken: TokenConfig,
     toToken: TokenConfig,
     amount: string,
-    lockedAssetsRate: string
+    lockedAssetsRate: string,
   ): string {
     try {
       const fromDecimals = fromToken.decimals;
@@ -45,15 +45,15 @@ class TokenConverter {
       const rateBN = ethers.parseUnits(lockedAssetsRate, 18);
 
       // Calculate converted amount: (amount * rate) / 10^18
-      const converted = (amountBN * rateBN) / ethers.parseUnits('1', 18);
+      const converted = (amountBN * rateBN) / ethers.parseUnits("1", 18);
 
       // Adjust for destination token decimals
       const result = ethers.formatUnits(converted, toDecimals);
 
       return result;
     } catch (error) {
-      console.error('Token conversion error:', error);
-      return '0';
+      console.error("Token conversion error:", error);
+      return "0";
     }
   }
 
@@ -64,7 +64,7 @@ class TokenConverter {
     poolId: string,
     token: string,
     amount: string,
-    rate: string
+    rate: string,
   ): void {
     if (!this.lockedAssets.has(poolId)) {
       this.lockedAssets.set(poolId, []);
@@ -88,7 +88,7 @@ class TokenConverter {
     fromToken: string,
     toToken: string,
     rate: string,
-    source: 'oracle' | 'dex' | 'locked-assets' = 'dex'
+    source: "oracle" | "dex" | "locked-assets" = "dex",
   ): void {
     const pairId = `${fromToken}-${toToken}`;
     this.conversionRates.set(pairId, {
@@ -112,10 +112,10 @@ class TokenConverter {
    */
   calculateLockedAssetValue(
     poolId: string,
-    referenceToken: TokenConfig
+    referenceToken: TokenConfig,
   ): string {
     const assets = this.getLockedAssets(poolId);
-    let totalValue = ethers.parseUnits('0', 18);
+    let totalValue = ethers.parseUnits("0", 18);
 
     for (const asset of assets) {
       try {
@@ -123,7 +123,7 @@ class TokenConverter {
         const assetRate = ethers.parseUnits(asset.rate, 18);
 
         // Value = amount * rate
-        const value = (assetAmount * assetRate) / ethers.parseUnits('1', 18);
+        const value = (assetAmount * assetRate) / ethers.parseUnits("1", 18);
         totalValue = totalValue + value;
       } catch (error) {
         console.error(`Failed to calculate value for ${asset.token}:`, error);
@@ -141,7 +141,7 @@ class TokenConverter {
     amount: string,
     tokenDecimals: number,
     minAmount?: string,
-    maxAmount?: string
+    maxAmount?: string,
   ): {
     valid: boolean;
     amount: string;
@@ -155,7 +155,7 @@ class TokenConverter {
         if (amountBN < minBN) {
           return {
             valid: false,
-            amount: '0',
+            amount: "0",
             error: `Amount below minimum of ${minAmount}`,
           };
         }
@@ -166,7 +166,7 @@ class TokenConverter {
         if (amountBN > maxBN) {
           return {
             valid: false,
-            amount: '0',
+            amount: "0",
             error: `Amount exceeds maximum of ${maxAmount}`,
           };
         }
@@ -176,8 +176,8 @@ class TokenConverter {
     } catch (error) {
       return {
         valid: false,
-        amount: '0',
-        error: 'Invalid amount format',
+        amount: "0",
+        error: "Invalid amount format",
       };
     }
   }
@@ -189,7 +189,7 @@ class TokenConverter {
   calculateConversionFee(
     amount: string,
     lockedAssetRatio: string, // Ratio of locked assets to total pool
-    baseFeePercentage: number = 0.25 // 0.25% base fee
+    baseFeePercentage: number = 0.25, // 0.25% base fee
   ): string {
     try {
       const amountBN = ethers.parseUnits(amount, 18);
@@ -197,14 +197,16 @@ class TokenConverter {
 
       // Reduce fee based on locked assets (more liquidity = lower fee)
       // Fee = baseFee * (1 - (lockedRatio * 0.5))
-      const baseFee = (amountBN * BigInt(baseFeePercentage * 100)) / ethers.parseUnits('100', 0);
-      const feeDelta = (baseFee * ratioBN) / ethers.parseUnits('2', 18);
+      const baseFee =
+        (amountBN * BigInt(baseFeePercentage * 100)) /
+        ethers.parseUnits("100", 0);
+      const feeDelta = (baseFee * ratioBN) / ethers.parseUnits("2", 18);
       const finalFee = baseFee - feeDelta;
 
       return ethers.formatUnits(finalFee, 18);
     } catch (error) {
-      console.error('Fee calculation error:', error);
-      return '0';
+      console.error("Fee calculation error:", error);
+      return "0";
     }
   }
 }

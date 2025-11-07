@@ -34,8 +34,9 @@ export default function Index() {
                   Decentralized Trading
                 </h1>
                 <p className="text-xl text-foreground/70 leading-relaxed max-w-lg">
-                  VirtDEX is the world's first decentralized exchange with a working virtual liquidity pool
-                  powered by USDh stablecoin. Trade, earn, and automate your strategies on Optimism with
+                  VirtDEX is the world's first decentralized exchange with a
+                  working virtual liquidity pool powered by USDh stablecoin.
+                  Trade, earn, and automate your strategies on Optimism with
                   enterprise-grade security and passive income optimization.
                 </p>
               </div>
@@ -85,7 +86,7 @@ export default function Index() {
                           className="flex-1 rounded-t bg-gradient-to-t from-primary to-cyan-400 opacity-70 hover:opacity-100 transition"
                           style={{ height: `${height}%` }}
                         ></div>
-                      )
+                      ),
                     )}
                   </div>
                   <div className="flex justify-between text-sm text-foreground/60">
@@ -119,8 +120,8 @@ export default function Index() {
               </div>
               <h3 className="text-xl font-bold mb-2">Arbitrage Bots</h3>
               <p className="text-foreground/70">
-                Multi-tier bot factory with Retail, Professional, and Institutional tiers
-                for automated profitable trading strategies.
+                Multi-tier bot factory with Retail, Professional, and
+                Institutional tiers for automated profitable trading strategies.
               </p>
             </div>
 
@@ -131,8 +132,8 @@ export default function Index() {
               </div>
               <h3 className="text-xl font-bold mb-2">Smart Wallet</h3>
               <p className="text-foreground/70">
-                Integrated in-app wallet with USDh stablecoin support, instant swaps, and
-                secure key management.
+                Integrated in-app wallet with USDh stablecoin support, instant
+                swaps, and secure key management.
               </p>
             </div>
 
@@ -143,8 +144,8 @@ export default function Index() {
               </div>
               <h3 className="text-xl font-bold mb-2">Cross-Chain Bridge</h3>
               <p className="text-foreground/70">
-                Seamless token bridging across 6+ networks including Ethereum, Polygon,
-                Arbitrum, Optimism, and more.
+                Seamless token bridging across 6+ networks including Ethereum,
+                Polygon, Arbitrum, Optimism, and more.
               </p>
             </div>
 
@@ -155,8 +156,8 @@ export default function Index() {
               </div>
               <h3 className="text-xl font-bold mb-2">Real-Time Analytics</h3>
               <p className="text-foreground/70">
-                Advanced charts, metrics, and insights to track your portfolio and bot
-                performance in real-time.
+                Advanced charts, metrics, and insights to track your portfolio
+                and bot performance in real-time.
               </p>
             </div>
 
@@ -167,8 +168,8 @@ export default function Index() {
               </div>
               <h3 className="text-xl font-bold mb-2">Mobile First</h3>
               <p className="text-foreground/70">
-                Fully responsive design optimized for all devices, trade and manage your
-                portfolio from anywhere.
+                Fully responsive design optimized for all devices, trade and
+                manage your portfolio from anywhere.
               </p>
             </div>
 
@@ -179,8 +180,8 @@ export default function Index() {
               </div>
               <h3 className="text-xl font-bold mb-2">Secure & Audited</h3>
               <p className="text-foreground/70">
-                Enterprise-grade security with multi-sig wallets, smart contract audits,
-                and insurance coverage.
+                Enterprise-grade security with multi-sig wallets, smart contract
+                audits, and insurance coverage.
               </p>
             </div>
           </div>
@@ -196,8 +197,9 @@ export default function Index() {
                 USDh Stablecoin Ecosystem
               </h2>
               <p className="text-lg text-foreground/70">
-                DeFiX is fully integrated with the USDh stablecoin ecosystem, providing
-                stable, reliable trading pairs with minimal slippage across all supported networks.
+                DeFiX is fully integrated with the USDh stablecoin ecosystem,
+                providing stable, reliable trading pairs with minimal slippage
+                across all supported networks.
               </p>
 
               <div className="space-y-4">
@@ -249,11 +251,16 @@ export default function Index() {
                     { label: "Users", value: "125K" },
                     { label: "Daily Vol", value: "$450M" },
                   ].map((stat) => (
-                    <div key={stat.label} className="text-center p-4 rounded-lg bg-black/30">
+                    <div
+                      key={stat.label}
+                      className="text-center p-4 rounded-lg bg-black/30"
+                    >
                       <div className="text-2xl font-bold text-accent mb-1">
                         {stat.value}
                       </div>
-                      <div className="text-xs text-foreground/60">{stat.label}</div>
+                      <div className="text-xs text-foreground/60">
+                        {stat.label}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -271,8 +278,8 @@ export default function Index() {
               Fiat On-Ramp Made Easy
             </h2>
             <p className="text-xl text-foreground/70 max-w-3xl mx-auto">
-              Buy USDh directly with your credit card, bank transfer, or other payment
-              methods. Get started in minutes with instant settlement.
+              Buy USDh directly with your credit card, bank transfer, or other
+              payment methods. Get started in minutes with instant settlement.
             </p>
 
             <div className="grid md:grid-cols-4 gap-4 my-8">
@@ -284,7 +291,7 @@ export default function Index() {
                   >
                     <p className="font-semibold">{method}</p>
                   </div>
-                )
+                ),
               )}
             </div>
 
@@ -345,17 +352,15 @@ export default function Index() {
             Ready to Start Trading?
           </h2>
           <p className="text-xl text-foreground/60 max-w-2xl mx-auto">
-            Join thousands of traders already using DeFiX to maximize their returns
-            with intelligent arbitrage bots and advanced analytics.
+            Join thousands of traders already using DeFiX to maximize their
+            returns with intelligent arbitrage bots and advanced analytics.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/dashboard" className="btn-primary text-lg">
               Launch App
               <ArrowRight size={20} />
             </Link>
-            <button className="btn-secondary text-lg">
-              Schedule Demo
-            </button>
+            <button className="btn-secondary text-lg">Schedule Demo</button>
           </div>
         </div>
       </section>
@@ -368,7 +373,10 @@ export default function Index() {
               <h4 className="font-bold mb-4">Product</h4>
               <ul className="space-y-2 text-foreground/60 text-sm">
                 <li>
-                  <Link to="/dashboard" className="hover:text-primary transition">
+                  <Link
+                    to="/dashboard"
+                    className="hover:text-primary transition"
+                  >
                     Dashboard
                   </Link>
                 </li>
@@ -378,7 +386,10 @@ export default function Index() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/analytics" className="hover:text-primary transition">
+                  <Link
+                    to="/analytics"
+                    className="hover:text-primary transition"
+                  >
                     Analytics
                   </Link>
                 </li>
@@ -449,9 +460,15 @@ export default function Index() {
           <div className="border-t border-border/50 pt-8 flex flex-col sm:flex-row justify-between items-center text-foreground/60 text-sm">
             <p>&copy; 2024 DeFiX. All rights reserved.</p>
             <div className="flex gap-6 mt-4 sm:mt-0">
-              <a href="#" className="hover:text-primary transition">Twitter</a>
-              <a href="#" className="hover:text-primary transition">Discord</a>
-              <a href="#" className="hover:text-primary transition">GitHub</a>
+              <a href="#" className="hover:text-primary transition">
+                Twitter
+              </a>
+              <a href="#" className="hover:text-primary transition">
+                Discord
+              </a>
+              <a href="#" className="hover:text-primary transition">
+                GitHub
+              </a>
             </div>
           </div>
         </div>
