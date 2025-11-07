@@ -69,9 +69,9 @@ export function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center text-white font-bold">
-              Ø
+              Ⅴ
             </div>
-            <span className="font-bold text-xl hidden sm:inline">DeFiX</span>
+            <span className="font-bold text-xl hidden sm:inline">VirtDEX</span>
           </Link>
 
           {/* Desktop Navigation */}
