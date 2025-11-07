@@ -26,17 +26,17 @@ export default function Index() {
             <div className="space-y-8">
               <div className="space-y-6">
                 <div className="inline-block px-4 py-2 rounded-full border border-primary/50 bg-primary/10 text-primary text-sm font-semibold">
-                  🚀 The Future of DeFi Trading
+                  🌟 World's First DEX with Virtual Liquidity
                 </div>
                 <h1 className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent leading-tight">
-                  Trade Smarter,
+                  The Future of
                   <br />
-                  Earn Better
+                  Decentralized Trading
                 </h1>
                 <p className="text-xl text-foreground/70 leading-relaxed max-w-lg">
-                  DeFiX is your comprehensive trading platform with integrated arbitrage bots,
-                  smart wallet, cross-chain bridging, and real-time analytics powered by USDh
-                  stablecoin ecosystem.
+                  VirtDEX is the world's first decentralized exchange with a working virtual liquidity pool
+                  powered by USDh stablecoin. Trade, earn, and automate your strategies on Optimism with
+                  enterprise-grade security and passive income optimization.
                 </p>
               </div>
 
